@@ -124,11 +124,11 @@ const App = () => {
       const projectElement = {
         id: project.id,
         name: project.name,
-        type: "project", // Set the type to "project"
+        type: "project",
         progress: 100,
-        start: projectStart, // Convert project start timestamp to Date object
-        end: projectEnd, // Convert project end timestamp to Date object
-        hideChildren: false, // Expandable/collapsible property
+        start: projectStart,
+        end: projectEnd,
+        hideChildren: false,
         height: 10,
       };
 
@@ -139,26 +139,23 @@ const App = () => {
 
         return {
           ...subtask,
-          start: subtaskStart, // Convert subtask start timestamp to Date object
-          end: subtaskEnd, // Convert subtask end timestamp to Date object
-          type: "task", // Set the type to "task"
-          project: project.id, // Associate the task with the project ID
+          start: subtaskStart,
+          end: subtaskEnd,
+          type: "task",
+          project: project.id,
           progress: 100,
           assignee: "Mani",
           scheduleName: project.name,
         };
       });
 
-      // Return both project and its subtasks in a single array (flattened)
       return [projectElement, ...subtasks];
     });
 
-    // Set the updated projects with the formatted dates in state
     setTasks(flattenedTasks);
   };
 
   useEffect(() => {
-    // Populate tasks only after the component mounts
     // setTasks(initTasks());
     fetchTasks();
   }, []);
@@ -215,34 +212,15 @@ const App = () => {
           labelDiv.style.borderRadius = "4px";
           labelDiv.style.fontSize = "14px";
           labelDiv.style.fontWeight = "normal";
-          labelDiv.style.transform = "translateX(-50%)"; // Center the label
-          labelDiv.style.pointerEvents = "none"; // Ensure it doesn't block interactions
+          labelDiv.style.transform = "translateX(-50%)";
+          labelDiv.style.pointerEvents = "none";
 
           // Append the div to the parent container
           parentContainer.appendChild(labelDiv);
         }
       }
     }
-  }, []); // Runs once after the component mounts
-
-  // const handleTaskChange = (task: Task) => {
-  //   let newTasks = tasks.map((t) => (t.id === task.id ? task : t));
-  //   if (task.project) {
-  //     const [start, end] = getStartEndDateForProject(newTasks, task.project);
-  //     const project =
-  //       newTasks[newTasks.findIndex((t) => t.id === task.project)];
-  //     if (
-  //       project.start.getTime() !== start.getTime() ||
-  //       project.end.getTime() !== end.getTime()
-  //     ) {
-  //       const changedProject = { ...project, start, end };
-  //       newTasks = newTasks.map((t) =>
-  //         t.id === task.project ? changedProject : t
-  //       );
-  //     }
-  //   }
-  //   setTasks(newTasks);
-  // };
+  }, []);
 
   const handleTaskChange = async (task: Task) => {
     try {
@@ -298,130 +276,6 @@ const App = () => {
     console.log("On expander click Id:" + task.id);
   };
 
-  // const handleAddTask = (selectedProject: Task) => {
-  //   console.log(selectedProject);
-
-  //   const currentDate = new Date();
-
-  //   const newTask: Task = {
-  //     name: "new task",
-  //     type: "task",
-  //     progress: 100,
-  //     id: uuidv4(), // Generate unique ID for the task
-  //     start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 2),
-  //     end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4, 0, 0),
-  //     project: selectedProject.id, // Associate with the selected project
-  //     styles: {
-  //       backgroundColor: "#33FF57", // Assign a color for tasks
-  //       progressColor: "#33FF57",
-  //     },
-  //   };
-
-  //   setTasks((prevTasks) => {
-  //     // Find the index of the selected project
-  //     const projectIndex = prevTasks.findIndex(
-  //       (t) => t.id === selectedProject.id
-  //     );
-
-  //     // Insert the new task right after the selected project but before the next project
-  //     const updatedTasks = [
-  //       ...prevTasks.slice(0, projectIndex + 1), // Include tasks up to the selected project
-  //       newTask, // Add the new task
-  //       ...prevTasks.slice(projectIndex + 1),
-  //     ];
-
-  //     return updatedTasks;
-  //   });
-  // };
-
-  // const handleAddTask = (selectedProject: Task) => {
-  //   console.log(selectedProject);
-
-  //   const currentDate = new Date();
-
-  //   // Create the new task object
-  //   setTasks((prevTasks) => {
-  //     // Filter out tasks under the selected project
-  //     const projectTasks = prevTasks.filter(
-  //       (t) => t.project === selectedProject.id
-  //     );
-
-  //     // Calculate the next task number based on the existing tasks under the selected project
-  //     const nextTaskNumber = projectTasks.length + 1;
-
-  //     const newTask: Task = {
-  //       name: `New Task ${nextTaskNumber}`, // Generate task name with the task number
-  //       type: "task",
-  //       progress: 100,
-  //       id: uuidv4(), // Generate unique ID for the task
-  //       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 2),
-  //       end: new Date(
-  //         currentDate.getFullYear(),
-  //         currentDate.getMonth(),
-  //         4,
-  //         0,
-  //         0
-  //       ),
-  //       project: selectedProject.id, // Associate with the selected project
-  //       styles: {
-  //         backgroundColor: "#33FF57", // Assign color for tasks
-  //         progressColor: "#33FF57",
-  //       },
-  //     };
-
-  //     // Find the index of the selected project
-  //     const projectIndex = prevTasks.findIndex(
-  //       (t) => t.id === selectedProject.id
-  //     );
-
-  //     // Separate out the project and task-related data
-  //     const tasksBeforeProject = prevTasks.slice(0, projectIndex + 1); // Up to and including the selected project
-  //     const tasksAfterProject = prevTasks.slice(projectIndex + 1); // Everything after the selected project
-
-  //     // Insert the new task directly after the selected project
-  //     const updatedTasks = [
-  //       ...tasksBeforeProject, // All tasks before the selected project (including the project itself)
-  //       newTask, // Add the new task after the selected project
-  //       ...tasksAfterProject, // All tasks after the selected project (unchanged)
-  //     ];
-
-  //     // Now, we want to ensure the tasks under the selected project are in order by task number
-  //     const projectTasksWithNewTask = [
-  //       ...tasksBeforeProject.filter((t) => t.project !== selectedProject.id), // Keep all tasks before the selected project
-  //       ...[newTask], // Add the new task
-  //       ...tasksAfterProject,
-  //     ];
-
-  //     return updatedTasks; // Return the new ordered tasks array
-  //   });
-  // };
-
-  // const handleAddProject = () => {
-  //   setTasks((prevTasks) => {
-  //     // Count the existing projects to generate a new name
-  //     const projectCount = prevTasks.filter((t) => t.type === "project").length;
-  //     const newProjectName = `Project ${projectCount + 1}`;
-
-  //     // Create a new project task
-  //     const newProject: Task = {
-  //       name: newProjectName,
-  //       type: "project",
-  //       progress: 0,
-  //       id: uuidv4(), // Generate a unique ID
-  //       start: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-  //       end: new Date(new Date().getFullYear(), new Date().getMonth(), 15),
-  //       hideChildren: false, // Expandable/collapsible property
-  //       styles: {
-  //         backgroundColor: "#3357FF", // Assign a unique color for projects
-  //         progressColor: "#3357FF",
-  //       },
-  //     };
-
-  //     // Add the new project to the end of the array
-  //     return [...prevTasks, newProject];
-  //   });
-  // };
-
   // Function to handle adding a task under a selected project
   const handleAddTask = async (selectedProject: Task) => {
     const currentDate = new Date();
@@ -431,7 +285,7 @@ const App = () => {
       name: `New Task 1`, // Generate task name with task number
       type: "task",
       // progress: 100,
-      id: uuidv4(), // Generate unique ID for the task
+      id: uuidv4(),
       start: new Date(
         currentDate.getFullYear(),
         currentDate.getMonth(),
@@ -467,7 +321,6 @@ const App = () => {
       const data = await response.json();
       if (response.ok) {
         console.log("Task added successfully:", data);
-        // After successful API response, update the state (this could be handled in a global state or via local state updates)
         await fetchTasks();
       } else {
         console.error("Error adding task:", data.message);
