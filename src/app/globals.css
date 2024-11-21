@@ -1,42 +1,111 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+}
+.Wrapper {
+  margin-bottom: 2rem;
+}
+.ViewContainer {
+  list-style: none;
+  -ms-box-orient: horizontal;
+  display: flex;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-a {
-  color: inherit;
+.Button {
+  background-color: #e7e7e7;
+  color: black;
+  border: none;
+  padding: 7px 16px;
   text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+}
+.Switch {
+  margin: 4px 15px;
+  font-size: 14px;
+  font-family: "Arial, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Switch_Toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  margin-right: 5px;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.Switch_Toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.Slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.Slider:before {
+  position: absolute;
+  content: "";
+  height: 21px;
+  width: 21px;
+  left: 6px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .Slider {
+  background-color: #2196f3;
+}
+
+input:focus + .Slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .Slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.rows > rect {
+  fill: #ffffff;
+  border-bottom: none;
+}
+
+/* .rows > rect:hover {
+  fill: #ebecef;
+} */
+
+.rows > rect:nth-child(even) {
+  /* fill: #f4f5f7; */
+  fill: #ffffff;
+}
+
+/* .rows > rect:nth-child(even):hover {
+  fill: #ebecef;
+} */
+
+.calendar > rect {
+  fill: #f4f5f7;
+}
+
+.rowLines > line {
+  stroke: none;
 }
