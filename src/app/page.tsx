@@ -100,6 +100,8 @@ const App = () => {
       hideChildren: false,
     },
   ]);
+
+  console.log(tasks, "sdfadsfe");
   const [isChecked, setIsChecked] = React.useState(true);
   const [hoveredTask, setHoveredTask] = React.useState<Task | null>(null);
   let columnWidth = 105;
@@ -124,30 +126,33 @@ const App = () => {
       const projectElement = {
         id: project.id,
         name: project.name,
-        type: "project",
+        type: "project", // Set the type to "project"
         progress: 100,
-        start: projectStart,
-        end: projectEnd,
-        hideChildren: false,
+        start: projectStart, // Convert project start timestamp to Date object
+        end: projectEnd, // Convert project end timestamp to Date object
+        hideChildren: false, // Expandable/collapsible property
         height: 10,
       };
 
       // Flatten the subtasks (tasks) and add them with type "task"
-      const subtasks = project.subtasks.map((subtask: any) => {
-        const subtaskStart = new Date(subtask.start);
-        const subtaskEnd = new Date(subtask.end);
-
-        return {
-          ...subtask,
-          start: subtaskStart,
-          end: subtaskEnd,
-          type: "task",
-          project: project.id,
-          progress: 100,
-          assignee: "Mani",
-          scheduleName: project.name,
-        };
-      });
+      const subtasks = project.subtasks.map(
+        (subtask: any, i: number, arr: any[]) => {
+          const subtaskStart = new Date(subtask.start);
+          const subtaskEnd = new Date(subtask.end);
+          console.log(arr[i - 1]);
+          return {
+            ...subtask,
+            start: subtaskStart,
+            end: subtaskEnd,
+            type: "task", // Set the type to "task"
+            project: project.id,
+            progress: 100,
+            assignee: "Mani",
+            scheduleName: project.name,
+            dependencies: i != 0 ? [arr[i - 1].id] : null,
+          };
+        }
+      );
 
       return [projectElement, ...subtasks];
     });
@@ -221,6 +226,27 @@ const App = () => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    // Get all line elements inside the rowLines group
+    const lines = document.querySelectorAll(".rowLines > line");
+
+    // Clear previous styles
+    lines.forEach((line) => line.classList.remove("highlighted-line"));
+
+    // Filter tasks to find where type is 'project'
+    const projectIndexes = tasks
+      .map((task, index) => (task.type === "project" ? index + 2 : null)) // Adjust index + 2 for nth-child (starting from 1)
+      .filter((index) => index !== null);
+
+    // Apply custom stroke to the appropriate lines
+    projectIndexes.forEach((index) => {
+      if (index > 2 && lines[index - 2]) {
+        // `nth-child` starts at 1; array index starts at 0
+        lines[index - 2].classList.add("highlighted-line");
+      }
+    });
+  }, [tasks]);
 
   const handleTaskChange = async (task: Task) => {
     try {
@@ -399,8 +425,8 @@ const App = () => {
         // barFill={40}
 
         onDateChange={handleTaskChange}
-        arrowColor="red"
-        arrowIndent={100}
+        // arrowColor="red"
+        arrowIndent={10}
         onDelete={handleTaskDelete}
         onProgressChange={handleProgressChange}
         onDoubleClick={handleDblClick}

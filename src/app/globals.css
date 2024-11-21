@@ -108,4 +108,19 @@ input:checked + .Slider:before {
 
 .rowLines > line {
   stroke: none;
+  /* stroke: #ebeff2; */
+}
+
+/* .rowLines > line:nth-child(5), */
+/* .rowLines > line:nth-child(8) { */
+/* stroke: none; */
+/* stroke: #ebeff2; */
+/* } */
+.highlighted-line {
+  stroke: #ff5733 !important;
+  stroke-width: 2px !important;
+}
+
+.custom-stroke {
+  stroke: #ebeff2 !important;
 }
