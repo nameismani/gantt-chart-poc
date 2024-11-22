@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Task, ViewMode, Gantt, StylingOption } from "gantt-task-react";
 import { v4 as uuidv4 } from "uuid";
 import "gantt-task-react/dist/index.css";
@@ -20,6 +20,7 @@ type TaskListTableProps = {
   onExpanderClick: (task: Task) => void;
   handleAddTask: (task: Task) => void;
   handleAddProject: () => void;
+  projectStates: Record<string, boolean>;
 };
 
 const TaskListTable = ({
@@ -29,6 +30,7 @@ const TaskListTable = ({
   onExpanderClick,
   handleAddTask,
   handleAddProject,
+  projectStates,
 }: TaskListTableProps) => {
   return (
     <div style={{ border: "1px solid #dfe1e5" }}>
@@ -51,7 +53,9 @@ const TaskListTable = ({
             }}
           >
             <p
-              onClick={() => onExpanderClick(item)}
+              onClick={() => {
+                onExpanderClick(item);
+              }}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -60,6 +64,11 @@ const TaskListTable = ({
             >
               {isProject ? "> " : ""}
               {item.name}
+              {isProject && (
+                <span>
+                  -{projectStates[item.id] == true ? "Expanded" : "Collapsed"}
+                </span>
+              )}
             </p>
             {isProject && (
               <div
@@ -100,8 +109,43 @@ const App = () => {
       hideChildren: false,
     },
   ]);
+  const [projectStates, setProjectStates] = useState<Record<string, boolean>>(
+    {}
+  );
+  const [initialTask, setInitialTask] = useState<any[]>([]);
+  const [intialRender, setInitialRender] = useState(true);
+  console.log(projectStates, "dsfdsf");
 
-  console.log(tasks, "sdfadsfe");
+  // Initialize state with project IDs from tasks
+  useEffect(() => {
+    if (
+      !intialRender &&
+      JSON.stringify(initialTask) === JSON.stringify(tasks)
+    ) {
+      const initialStates = tasks
+        .filter((task) => task.type === "project") // Filter only "project" types
+        .reduce((acc, project) => {
+          acc[project.id] = true; // Set the initial value to true
+          return acc;
+        }, {} as Record<string, boolean>);
+      setProjectStates(initialStates);
+    }
+  }, [tasks, initialTask]);
+  // useEffect(() => {
+  //   if (!intialRender && initialTask?.length != tasks?.length) {
+  //     setInitialTask(tasks);
+  //   }
+  // }, [intialRender, tasks]);
+  // Function to toggle the value of a project ID
+  const toggleProjectState = (taskId: string) => {
+    console.log(taskId, projectStates[taskId]);
+    setProjectStates((prevStates) => ({
+      ...prevStates,
+      [taskId]: !prevStates[taskId], // Toggle the value for the given task ID
+    }));
+  };
+
+  console.log(projectStates, "sdfadsfe");
   const [isChecked, setIsChecked] = React.useState(true);
   const [hoveredTask, setHoveredTask] = React.useState<Task | null>(null);
   let columnWidth = 105;
@@ -158,11 +202,13 @@ const App = () => {
     });
 
     setTasks(flattenedTasks);
+    setInitialTask(flattenedTasks);
   };
 
   useEffect(() => {
     // setTasks(initTasks());
     fetchTasks();
+    setInitialRender(false);
   }, []);
 
   useEffect(() => {
@@ -236,14 +282,14 @@ const App = () => {
 
     // Filter tasks to find where type is 'project'
     const projectIndexes = tasks
-      .map((task, index) => (task.type === "project" ? index + 2 : null)) // Adjust index + 2 for nth-child (starting from 1)
+      .map((task, index) => (task.type === "project" ? index : null))
       .filter((index) => index !== null);
 
     // Apply custom stroke to the appropriate lines
     projectIndexes.forEach((index) => {
-      if (index > 2 && lines[index - 2]) {
+      if (index > 0 && lines[index]) {
         // `nth-child` starts at 1; array index starts at 0
-        lines[index - 2].classList.add("highlighted-line");
+        lines[index].classList.add("highlighted-line");
       }
     });
   }, [tasks]);
@@ -298,8 +344,9 @@ const App = () => {
 
   const handleExpanderClick = (task: Task) => {
     setTasks(tasks.map((t) => (t.id === task.id ? task : t)));
-    console.log(tasks.map((t) => (t.id === task.id ? task : t)));
-    console.log("On expander click Id:" + task.id);
+    toggleProjectState(task.id);
+    // console.log(tasks.map((t) => (t.id === task.id ? task : t)));
+    // console.log("On expander click Id:" + task.id);
   };
 
   // Function to handle adding a task under a selected project
@@ -479,6 +526,7 @@ const App = () => {
             {...props}
             handleAddTask={handleAddTask}
             handleAddProject={handleAddProject}
+            projectStates={projectStates}
           />
         )}
       />

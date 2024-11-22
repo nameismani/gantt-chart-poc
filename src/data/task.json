@@ -3,30 +3,30 @@
     {
       "id": "b0e5cbb9-d342-4a3e-90bc-21ad19c8b810",
       "name": "Kitchen",
-      "start": 1730436757700,
-      "end": 1731040959200,
+      "start": 1730485800000,
+      "end": 1732213800000,
       "subtasks": [
         {
           "id": "c0e5cbb9-d342-4a3e-90bc-21ad19c8b810",
           "name": "Plumbing",
-          "start": 1730467817000,
-          "end": 1731040959200,
+          "start": 1730485800000,
+          "end": 1732213800000,
           "type": "task",
           "project": "b0e5cbb9-d342-4a3e-90bc-21ad19c8b810"
         },
         {
           "id": "e0e5cbb9-d342-4a3e-90bc-21ad19c8b810",
           "name": "Tiles fitting",
-          "start": "2024-11-01T04:52:37.700Z",
-          "end": "2024-11-02T15:06:17.000Z",
+          "start": 1730572200000,
+          "end": 1730745000000,
           "type": "task",
           "project": "b0e5cbb9-d342-4a3e-90bc-21ad19c8b810"
         },
         {
           "name": "New Task 1",
-          "id": "4e3ac83c-928b-4a94-b783-258c684bf5b8",
+          "id": "97233fd6-ca6c-498b-a4a5-4444cfe22b62",
           "start": 1730485800000,
-          "end": 1730981578900,
+          "end": 1730658600000,
           "project": "b0e5cbb9-d342-4a3e-90bc-21ad19c8b810"
         }
       ]
@@ -34,17 +34,24 @@
     {
       "id": "06b01665-8271-44ca-9375-bd6a816e1c9f",
       "name": "Bedroom",
-      "start": 1730409169700,
-      "end": 1730544552000,
+      "start": 1730399400000,
+      "end": 1730917800000,
       "subtasks": [
         {
           "id": "d0e5cbb9-d342-4a3e-90bc-21ad19c8b810",
           "name": "Wardrobe",
-          "start": "2024-10-31T21:12:49.700Z",
-          "end": "2024-11-02T10:49:12.000Z",
+          "start": 1730399400000,
+          "end": 1730917800000,
           "type": "task",
           "project": "06b01665-8271-44ca-9375-bd6a816e1c9f",
           "progress": 100
+        },
+        {
+          "name": "New Task 1",
+          "id": "36c36943-dd7f-495e-966b-d8d816eda96e",
+          "start": 1730485800000,
+          "end": 1730745000000,
+          "project": "06b01665-8271-44ca-9375-bd6a816e1c9f"
         }
       ]
     },
@@ -52,16 +59,16 @@
       "name": "Project 3",
       "type": "project",
       "progress": 0,
-      "id": "ca878cf8-44da-4c5a-9209-8a1b7e804472",
-      "start": 1730485800000,
-      "end": 1730766050200,
+      "id": "f71ec428-bea1-43a1-9834-274398eed2fe",
+      "start": 1730399400000,
+      "end": 1731609000000,
       "subtasks": [
         {
           "name": "New Task 1",
-          "id": "f7b91ffb-9659-40ed-a572-fcacdd74c07a",
+          "id": "c591518a-8bdc-4cbb-9571-5d18c09e139d",
           "start": 1730485800000,
-          "end": 1730766050200,
-          "project": "ca878cf8-44da-4c5a-9209-8a1b7e804472"
+          "end": 1730658600000,
+          "project": "f71ec428-bea1-43a1-9834-274398eed2fe"
         }
       ]
     },
@@ -69,31 +76,7 @@
       "name": "Project 4",
       "type": "project",
       "progress": 0,
-      "id": "9adf9eb8-4124-4ac6-ab20-f7a7e7c9494c",
-      "start": 1730485800000,
-      "end": 1731218471900,
-      "subtasks": [
-        {
-          "name": "New Task 1",
-          "id": "d2b7631c-2117-44eb-bab4-99e1fb029e6f",
-          "start": 1730485800000,
-          "end": 1730761337400,
-          "project": "9adf9eb8-4124-4ac6-ab20-f7a7e7c9494c"
-        },
-        {
-          "name": "New Task 1",
-          "id": "27e53de2-d125-4f9d-bf93-a247fa171627",
-          "start": 1730963356300,
-          "end": 1731218471900,
-          "project": "9adf9eb8-4124-4ac6-ab20-f7a7e7c9494c"
-        }
-      ]
-    },
-    {
-      "name": "Project 5",
-      "type": "project",
-      "progress": 0,
-      "id": "4a908b03-2bee-40d2-ab1e-4e07204f0e70",
+      "id": "a099f912-4db5-4e0d-90dc-ca5d4d70c49d",
       "start": 1730399400000,
       "end": 1731609000000,
       "subtasks": []

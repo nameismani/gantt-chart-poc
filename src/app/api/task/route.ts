@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { NextResponse } from "next/server";
+import dayjs from "dayjs";
 // Interfaces
 interface Subtask {
   id: string;
@@ -124,6 +125,7 @@ export async function PATCH(req: Request) {
     // Parse the request body
     const { task } = await req.json();
     const { name, type, id, start, end, project } = task;
+
     if (!task || !task.id || !task.project) {
       return NextResponse.json(
         { message: "Task ID and associated project are required" },
@@ -154,32 +156,43 @@ export async function PATCH(req: Request) {
       );
     }
 
-    // Update the task with new values
+    // Helper function to normalize the start and end dates
+    const normalizeDate = (
+      date: string | number | Date,
+      isEnd: boolean = false
+    ): number => {
+      const d = dayjs(date);
+      return isEnd
+        ? d.add(1, "day").startOf("day").valueOf() // Next day at 12:00 AM
+        : d.startOf("day").valueOf(); // Same day at 12:00 AM
+    };
+
+    // Update the task with normalized start and end dates
     projectD.subtasks[taskIndex] = {
       ...projectD.subtasks[taskIndex],
       ...{
         name,
         id,
-        start: new Date(start).getTime(),
-        end: new Date(end).getTime(),
+        start: normalizeDate(start),
+        end: normalizeDate(end, true),
         project,
       },
     };
 
     // Recalculate the project's start and end dates
-    let startD = new Date(projectD.subtasks[0].start).getTime();
-    let endD = new Date(projectD.subtasks[0].end).getTime();
+    let startD = normalizeDate(projectD.subtasks[0].start);
+    let endD = normalizeDate(projectD.subtasks[0].end);
 
     for (const subtask of projectD.subtasks) {
-      const taskStart = new Date(subtask.start).getTime();
-      const taskEnd = new Date(subtask.end).getTime();
+      const taskStart = normalizeDate(subtask.start);
+      const taskEnd = normalizeDate(subtask.end);
 
       if (taskStart < startD) startD = taskStart;
       if (taskEnd > endD) endD = taskEnd;
     }
 
-    projectD.start = new Date(startD).getTime();
-    projectD.end = new Date(endD).getTime();
+    projectD.start = startD;
+    projectD.end = endD;
 
     // Save the updated data back to the database or JSON file
     writeProjectsData(projectsData);
